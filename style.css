@@ -140,7 +140,7 @@ body {
     padding: var(--spacing-md);
 }
 
-.collapsible-panel.is-collapsed > :not(.panel-header) {
+.collapsible-panel.is-collapsed> :not(.panel-header) {
     display: none;
 }
 
