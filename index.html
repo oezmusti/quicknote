@@ -9,10 +9,16 @@
 </head>
 
 <body>
-    <div class="app-shell">
-        <aside class="sidebar panel">
+    <div id="mobile-nav" class="mobile-nav hidden" aria-live="polite">
+        <button id="mobile-back-btn" type="button" class="btn mobile-back-btn">← Zurück</button>
+        <span id="mobile-nav-title" class="mobile-nav-title">Ordner</span>
+    </div>
+
+    <div id="app-shell" class="app-shell">
+        <aside id="folders-panel" class="sidebar panel collapsible-panel">
             <div class="panel-header">
                 <h1>QuickNotes</h1>
+                <button id="toggle-folders-btn" type="button" class="icon-btn collapse-btn" title="Ordnerleiste einklappen" aria-label="Ordnerleiste einklappen">◀</button>
             </div>
 
             <div class="folder-actions">
@@ -31,23 +37,33 @@
             </section>
         </aside>
 
-        <main class="notes-column panel">
+        <main id="notes-panel" class="notes-column panel collapsible-panel">
             <div class="panel-header notes-header">
                 <h2>Notizen</h2>
-                <button id="add-note-btn" class="btn btn-primary">+ Notiz</button>
+                <div class="notes-header-actions">
+                    <button id="add-note-btn" class="btn btn-primary">+ Notiz</button>
+                    <button id="toggle-notes-btn" type="button" class="icon-btn collapse-btn" title="Notizenleiste einklappen" aria-label="Notizenleiste einklappen">◀</button>
+                </div>
             </div>
 
             <div class="search-wrap">
-                <input id="search-input" type="search" placeholder="Suche nach Titel oder Inhalt..." />
+                <input id="search-input" type="search" class="input-field"
+                    placeholder="Suche nach Titel oder Inhalt..." />
             </div>
 
             <ul id="notes-list" class="notes-list"></ul>
         </main>
 
-        <section class="editor-column panel">
+        <section id="editor-panel" class="editor-column panel">
             <div class="panel-header editor-header">
                 <h2>Editor</h2>
-                <button id="delete-note-btn" class="btn btn-danger" disabled>Notiz löschen</button>
+                <div class="editor-header-actions">
+                    <div class="editor-mode-switch" role="tablist" aria-label="Editor Modus">
+                        <button id="mode-view-btn" type="button" class="btn mode-btn">View</button>
+                        <button id="mode-edit-btn" type="button" class="btn mode-btn active">Edit</button>
+                    </div>
+                    <button id="delete-note-btn" class="btn btn-danger" disabled>Notiz löschen</button>
+                </div>
             </div>
 
             <div id="editor-empty" class="empty-state">
@@ -55,52 +71,83 @@
             </div>
 
             <div id="editor-area" class="editor-area hidden">
-                <label for="note-title">Titel</label>
-                <input id="note-title" type="text" placeholder="Titel der Notiz" />
+                <div id="editor-edit-area" class="editor-edit-area">
+                    <label for="note-title">Titel</label>
+                    <input id="note-title" type="text" class="input-field" placeholder="Titel der Notiz" />
 
-                <label for="note-folder">Ordner</label>
-                <select id="note-folder"></select>
+                    <label for="note-folder">Ordner</label>
+                    <select id="note-folder" class="select-field"></select>
 
-                <div class="meta-row">
-                    <span id="created-at">Erstellt: –</span>
-                    <span id="updated-at">Geändert: –</span>
-                </div>
+                    <label for="note-color-palette">Notizfarbe</label>
+                    <div class="color-palette" id="note-color-palette"></div>
 
-                <div class="toolbar" id="editor-toolbar">
-                    <button type="button" class="tool-btn" data-command="bold" title="Fett"><b>B</b></button>
-
-                    <div class="tool-group">
-                        <button type="button" class="tool-btn color" data-color="#3B82F6" style="--swatch:#3B82F6"
-                            title="Blau"></button>
-                        <button type="button" class="tool-btn color" data-color="#EAB308" style="--swatch:#EAB308"
-                            title="Gelb"></button>
-                        <button type="button" class="tool-btn color" data-color="#22C55E" style="--swatch:#22C55E"
-                            title="Grün"></button>
-                        <button type="button" class="tool-btn color" data-color="#EF4444" style="--swatch:#EF4444"
-                            title="Rot"></button>
-                        <button type="button" class="tool-btn color" data-color="#EC4899" style="--swatch:#EC4899"
-                            title="Pink"></button>
-                        <button type="button" class="tool-btn color" data-color="#F97316" style="--swatch:#F97316"
-                            title="Orange"></button>
+                    <div class="meta-row">
+                        <span id="created-at">Erstellt: –</span>
+                        <span id="updated-at">Geändert: –</span>
                     </div>
 
-                    <div class="tool-group">
-                        <button type="button" class="tool-btn" data-size="headline">Headline</button>
-                        <button type="button" class="tool-btn" data-size="subheadline">Subheadline</button>
-                        <button type="button" class="tool-btn" data-size="text">Text</button>
+                    <div class="toolbar" id="editor-toolbar">
+                        <button type="button" class="tool-btn" data-command="bold" title="Fett"><b>B</b></button>
+
+                        <div class="tool-group">
+                            <button type="button" class="tool-btn color" data-color="#3B82F6" style="--swatch:#3B82F6"
+                                title="Blau"></button>
+                            <button type="button" class="tool-btn color" data-color="#EAB308" style="--swatch:#EAB308"
+                                title="Gelb"></button>
+                            <button type="button" class="tool-btn color" data-color="#22C55E" style="--swatch:#22C55E"
+                                title="Grün"></button>
+                            <button type="button" class="tool-btn color" data-color="#EF4444" style="--swatch:#EF4444"
+                                title="Rot"></button>
+                            <button type="button" class="tool-btn color" data-color="#EC4899" style="--swatch:#EC4899"
+                                title="Pink"></button>
+                            <button type="button" class="tool-btn color" data-color="#F97316" style="--swatch:#F97316"
+                                title="Orange"></button>
+                        </div>
+
+                        <div class="tool-group">
+                            <button type="button" class="tool-btn" data-size="headline">Headline</button>
+                            <button type="button" class="tool-btn" data-size="subheadline">Subheadline</button>
+                            <button type="button" class="tool-btn" data-size="text">Text</button>
+                        </div>
+
+                        <button type="button" id="insert-link-btn" class="tool-btn">Link</button>
+                        <button type="button" id="insert-image-btn" class="tool-btn">Bild</button>
+                        <input id="image-input" type="file" accept="image/*" hidden />
                     </div>
 
-                    <button type="button" id="insert-link-btn" class="tool-btn">Link</button>
-                    <button type="button" id="insert-image-btn" class="tool-btn">Bild</button>
-                    <input id="image-input" type="file" accept="image/*" hidden />
+                    <div id="note-content" class="note-content" contenteditable="true"></div>
                 </div>
 
-                <div id="note-content" class="note-content" contenteditable="true"></div>
+                <div id="note-content-view" class="note-content note-content-view hidden"></div>
             </div>
         </section>
     </div>
 
     <div id="toast" class="toast hidden"></div>
+
+    <div id="folder-modal-overlay" class="overlay hidden" role="dialog" aria-modal="true"
+        aria-labelledby="folder-modal-title">
+        <div class="modal panel">
+            <div class="panel-header">
+                <h2 id="folder-modal-title">Ordner bearbeiten</h2>
+                <button id="folder-modal-close" type="button" class="icon-btn" aria-label="Schließen">✕</button>
+            </div>
+
+            <form id="folder-modal-form" class="modal-form">
+                <label for="folder-modal-name">Ordnername</label>
+                <input id="folder-modal-name" type="text" maxlength="60" class="input-field"
+                    placeholder="Name des Ordners" required />
+
+                <label for="folder-color-palette">Farbe</label>
+                <div class="color-palette" id="folder-color-palette"></div>
+
+                <div class="modal-actions">
+                    <button id="folder-modal-cancel" type="button" class="btn">Abbrechen</button>
+                    <button id="folder-modal-save" type="submit" class="btn btn-primary">Speichern</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
